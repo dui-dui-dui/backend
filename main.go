@@ -18,43 +18,25 @@ func main() {
 
 	schemas, err := loadSchema()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("load schema", err)
 	}
 	groups, err := loadRuleConfig()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("load rule config", err)
 	}
 	labels, err := loadStoreLabels()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("load store labels", err)
 	}
 
-	type config struct {
-		Schemas     []Schema     `json:"schemas"`
-		RuleConfig  []Group      `json:"rule_config"`
-		StoreLables []StoreLabel `json:"store_labels"`
-	}
-
-	for _, g := range groups {
-		for i := range g.Rules {
-			for _, s := range schemas {
-				if g.Rules[i].StartKeyHex == s.StartKey {
-					g.Rules[i].StartSchema = s.Name
-				}
-				if g.Rules[i].EndKeyHex == s.EndKey {
-					g.Rules[i].EndSchema = s.Name
-				}
-			}
-		}
-	}
-
-	cfg := config{
-		Schemas:     schemas,
-		RuleConfig:  groups,
-		StoreLables: labels,
-	}
+	es, ee, eg := convertToEvents(schemas, groups)
 
 	enc := json.NewEncoder(os.Stdout)
 	enc.SetIndent("", "  ")
-	enc.Encode(cfg)
+	enc.Encode(map[string]any{
+		"schemas": es,
+		"groups":  eg,
+		"events":  ee,
+		"labels":  labels,
+	})
 }

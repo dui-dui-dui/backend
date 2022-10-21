@@ -12,8 +12,6 @@ type Rule struct {
 	ID               string            `json:"id"`                          // unique ID within a group
 	Index            int               `json:"index"`                       // rule apply order in a group, rule with less ID is applied first when indexes are equal
 	Override         bool              `json:"override"`                    // when it is true, all rules with less indexes are disabled
-	StartSchema      string            `json:"start_schema"`                // start schema name
-	EndSchema        string            `json:"end_schema"`                  // end schema name
 	StartKeyHex      string            `json:"start_key"`                   // hex format start key, for marshal/unmarshal
 	EndKeyHex        string            `json:"end_key"`                     // hex format end key, for marshal/unmarshal
 	Role             string            `json:"role"`                        // expected role of the peers
