@@ -1,0 +1,58 @@
+[
+  {
+    "ts": 1640966400000000,
+    "name": "meta",
+    "description": "meta data of tidb cluster",
+    "start_key": "",
+    "end_key": "7480000000000000FF0000000000000000F8"
+  },
+  {
+    "ts": 1641052800000000,
+    "name": "system",
+    "description": "system tables of mysql database",
+    "start_key": "7480000000000000FF4400000000000000F8",
+    "end_key": "7480000000000000FF4600000000000000F8"
+  },
+  {
+    "ts": 1641139200000000,
+    "name": "foo",
+    "description": "test/foo",
+    "start_key": "7480000000000000FF4600000000000000F8",
+    "end_key": "7480000000000000FF4800000000000000F8"
+  },
+  {
+    "ts": 1641225600000000,
+    "name": "bar",
+    "description": "test/bar",
+    "start_key": "7480000000000000FF4800000000000000F8",
+    "end_key": "7480000000000000FF4A00000000000000F8"
+  },
+  {
+    "ts": 1641312000000000,
+    "name": "baz",
+    "description": "test/baz",
+    "start_key": "7480000000000000FF4A00000000000000F8",
+    "end_key": "7480000000000000FF4C00000000000000F8"
+  },
+  {
+    "ts": 1641398400000000,
+    "name": "happy",
+    "description": "hackathon/happy",
+    "start_key": "7480000000000000FF4E00000000000000F8",
+    "end_key": "7480000000000000FF5000000000000000F8"
+  },
+  {
+    "ts": 1641484800000000,
+    "name": "lucky",
+    "description": "hackathon/lucky",
+    "start_key": "7480000000000000FF5000000000000000F8",
+    "end_key": "7480000000000000FF5200000000000000F8"
+  },
+  {
+    "ts": 1641571200000000,
+    "name": "default",
+    "description": "future tables",
+    "start_key": "7480000000000000FF5200000000000000F8",
+    "end_key": ""
+  }
+]

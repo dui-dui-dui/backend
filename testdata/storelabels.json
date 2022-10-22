@@ -1,0 +1,23 @@
+[
+  {
+    "key": "disk",
+    "values": [
+      "hdd",
+      "ssd"
+    ]
+  },
+  {
+    "key": "engine",
+    "values": [
+      "tiflash"
+    ]
+  },
+  {
+    "key": "zone",
+    "values": [
+      "zone-1",
+      "zone-2",
+      "zone-3"
+    ]
+  }
+]

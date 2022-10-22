@@ -1,0 +1,106 @@
+[
+  {
+    "id": 1,
+    "address": "127.0.0.1:21061",
+    "labels": [
+      {
+        "key": "disk",
+        "value": "hdd"
+      },
+      {
+        "key": "zone",
+        "value": "zone-1"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "address": "127.0.0.1:21062",
+    "labels": [
+      {
+        "key": "disk",
+        "value": "ssd"
+      },
+      {
+        "key": "zone",
+        "value": "zone-1"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "address": "127.0.0.1:21065",
+    "labels": [
+      {
+        "key": "disk",
+        "value": "hdd"
+      },
+      {
+        "key": "zone",
+        "value": "zone-3"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "address": "127.0.0.1:21066",
+    "labels": [
+      {
+        "key": "disk",
+        "value": "hdd"
+      },
+      {
+        "key": "zone",
+        "value": "zone-3"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "address": "127.0.0.1:21063",
+    "labels": [
+      {
+        "key": "disk",
+        "value": "hdd"
+      },
+      {
+        "key": "zone",
+        "value": "zone-2"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "address": "127.0.0.1:21064",
+    "labels": [
+      {
+        "key": "disk",
+        "value": "ssd"
+      },
+      {
+        "key": "zone",
+        "value": "zone-2"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "address": "127.0.0.1:21067",
+    "labels": [
+      {
+        "key": "engine",
+        "value": "tiflash"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "address": "127.0.0.1:21068",
+    "labels": [
+      {
+        "key": "engine",
+        "value": "tiflash"
+      }
+    ]
+  }
+]

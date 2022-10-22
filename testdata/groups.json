@@ -1,0 +1,52 @@
+[
+  {
+    "group_id": "pd",
+    "group_index": 0,
+    "group_override": false,
+    "rules": [
+      {
+        "group_id": "pd",
+        "id": "default",
+        "index": 0,
+        "override": false,
+        "start_key": "",
+        "end_key": "",
+        "role": "voter",
+        "count": 3,
+        "location_labels": [
+          "zone"
+        ]
+      },
+      {
+        "group_id": "pd",
+        "id": "meta",
+        "index": 1,
+        "override": false,
+        "start_key": "",
+        "end_key": "7480000000000000FF0000000000000000F8",
+        "role": "voter",
+        "count": 2,
+        "location_labels": [
+          "zone"
+        ]
+      }
+    ]
+  },
+  {
+    "group_id": "tiflash",
+    "group_index": 120,
+    "group_override": false,
+    "rules": [
+      {
+        "group_id": "tiflash",
+        "id": "happy",
+        "index": 0,
+        "override": false,
+        "start_key": "7480000000000000FF4E00000000000000F8",
+        "end_key": "7480000000000000FF5000000000000000F8",
+        "role": "learner",
+        "count": 1
+      }
+    ]
+  }
+]

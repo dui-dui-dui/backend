@@ -1,0 +1,151 @@
+{
+  "groups": [
+    {
+      "group_id": "pd",
+      "group_index": 0,
+      "group_override": true,
+      "rules": [
+        {
+          "count": 5,
+          "end_key": "",
+          "group_id": "pd",
+          "id": "default",
+          "index": 0,
+          "location_labels": [
+            "zone"
+          ],
+          "override": false,
+          "role": "voter",
+          "start_key": ""
+        },
+        {
+          "count": 2,
+          "end_key": "7480000000000000FF0000000000000000F8",
+          "group_id": "pd",
+          "id": "meta",
+          "index": 1,
+          "location_labels": [
+            "zone"
+          ],
+          "override": false,
+          "role": "voter",
+          "start_key": ""
+        }
+      ]
+    },
+    {
+      "group_id": "tiflash",
+      "group_index": 120,
+      "group_override": false,
+      "rules": [
+        {
+          "count": 1,
+          "end_key": "7480000000000000FF5000000000000000F8",
+          "group_id": "tiflash",
+          "id": "happy",
+          "index": 0,
+          "override": false,
+          "role": "learner",
+          "start_key": "7480000000000000FF4E00000000000000F8"
+        }
+      ]
+    },
+    {
+      "group_id": "tiflash2",
+      "group_override": true,
+      "rules": [
+        {
+          "count": 3,
+          "end_key": "7480000000000000FF5000000000000000F8",
+          "id": "happy2",
+          "index": 0,
+          "override": true,
+          "role": "learner",
+          "start_key": "7480000000000000FF4E00000000000000F8"
+        }
+      ]
+    }
+  ],
+  "labels": [
+    {
+      "key": "disk",
+      "values": [
+        "hdd",
+        "ssd"
+      ]
+    },
+    {
+      "key": "engine",
+      "values": [
+        "tiflash"
+      ]
+    },
+    {
+      "key": "zone",
+      "values": [
+        "zone-1",
+        "zone-2",
+        "zone-3"
+      ]
+    }
+  ],
+  "markdown": "group pd\n\n01/01/2022 - 01/08/2022: default\n01/01/2022 - 01/01/2022: meta\ngroup tiflash\n\n01/06/2022 - 01/06/2022: happy\n",
+  "schemas": [
+    {
+      "description": "meta data of tidb cluster",
+      "end_key": "7480000000000000FF0000000000000000F8",
+      "name": "meta",
+      "start_key": "",
+      "ts": 1640966400000000
+    },
+    {
+      "description": "system tables of mysql database",
+      "end_key": "7480000000000000FF4600000000000000F8",
+      "name": "system",
+      "start_key": "7480000000000000FF4400000000000000F8",
+      "ts": 1641052800000000
+    },
+    {
+      "description": "test/foo",
+      "end_key": "7480000000000000FF4800000000000000F8",
+      "name": "foo",
+      "start_key": "7480000000000000FF4600000000000000F8",
+      "ts": 1641139200000000
+    },
+    {
+      "description": "test/bar",
+      "end_key": "7480000000000000FF4A00000000000000F8",
+      "name": "bar",
+      "start_key": "7480000000000000FF4800000000000000F8",
+      "ts": 1641225600000000
+    },
+    {
+      "description": "test/baz",
+      "end_key": "7480000000000000FF4C00000000000000F8",
+      "name": "baz",
+      "start_key": "7480000000000000FF4A00000000000000F8",
+      "ts": 1641312000000000
+    },
+    {
+      "description": "hackathon/happy",
+      "end_key": "7480000000000000FF5000000000000000F8",
+      "name": "happy",
+      "start_key": "7480000000000000FF4E00000000000000F8",
+      "ts": 1641398400000000
+    },
+    {
+      "description": "hackathon/lucky",
+      "end_key": "7480000000000000FF5200000000000000F8",
+      "name": "lucky",
+      "start_key": "7480000000000000FF5000000000000000F8",
+      "ts": 1641484800000000
+    },
+    {
+      "description": "future tables",
+      "end_key": "",
+      "name": "default",
+      "start_key": "7480000000000000FF5200000000000000F8",
+      "ts": 1641571200000000
+    }
+  ]
+}

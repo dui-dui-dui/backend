@@ -1,5 +1,10 @@
 package main
 
+import (
+	"encoding/json"
+	"io/ioutil"
+)
+
 type Group struct {
 	ID       string `json:"group_id"`
 	Index    int    `json:"group_index"`
@@ -46,6 +51,16 @@ const (
 )
 
 func loadRuleConfig() ([]Group, error) {
+	if *dev {
+		data, err := ioutil.ReadFile("groups.json")
+		if err != nil {
+			data = groupsJSON
+		}
+		var groups []Group
+		json.Unmarshal(data, &groups)
+		return groups, nil
+	}
+
 	var groups []Group
 	err := httpGet("http://"+*pdAddr+"/pd/api/v1/config/placement-rule", &groups)
 	if err != nil {

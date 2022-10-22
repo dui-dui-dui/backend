@@ -6,16 +6,23 @@ import (
 	"net/http"
 	"sort"
 	"strings"
+	"time"
 )
 
+type TSMap struct {
+	StartTS map[string]time.Time
+	EndTS   map[string]time.Time
+}
+
 type Schema struct {
+	TS          int64  `json:"ts"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	StartKey    string `json:"start_key"`
 	EndKey      string `json:"end_key"`
 }
 
-func loadSchema() ([]Schema, error) {
+func loadSchema() ([]Schema, TSMap, error) {
 	type database struct {
 		ID     int64 `json:"id"`
 		DBName struct {
@@ -31,10 +38,15 @@ func loadSchema() ([]Schema, error) {
 		} `json:"name"`
 	}
 
+	tsMap := TSMap{
+		StartTS: make(map[string]time.Time),
+		EndTS:   make(map[string]time.Time),
+	}
+
 	var databases []database
 	err := httpGet("http://"+*tidbAddr+"/schema", &databases)
 	if err != nil {
-		return nil, err
+		return nil, tsMap, err
 	}
 
 	var schemas []Schema
@@ -48,7 +60,7 @@ func loadSchema() ([]Schema, error) {
 	var tables []table
 	err = httpGet("http://"+*tidbAddr+"/schema/mysql", &tables)
 	if err != nil {
-		return nil, err
+		return nil, tsMap, err
 	}
 	var maxID int64
 	for _, table := range tables {
@@ -72,7 +84,7 @@ func loadSchema() ([]Schema, error) {
 		var tbls []table
 		err = httpGet("http://"+*tidbAddr+"/schema/"+db.DBName.O, &tbls)
 		if err != nil {
-			return nil, err
+			return nil, tsMap, err
 		}
 		for i := range tbls {
 			tbls[i].DBName = db.DBName.O
@@ -99,7 +111,16 @@ func loadSchema() ([]Schema, error) {
 		EndKey:      "",
 	})
 
-	return schemas, nil
+	start, _ := time.Parse("2006-01-02 15:04:05 MST", "2022-01-01 00:00:00 CST")
+	tsMap.StartTS[""] = start
+	tsMap.EndTS[""] = start.AddDate(0, 0, len(schemas)-1)
+	for i, s := range schemas {
+		ts := start.AddDate(0, 0, i)
+		tsMap.StartTS[s.StartKey], tsMap.EndTS[s.EndKey] = ts, ts
+		schemas[i].TS = ts.UnixMicro()
+	}
+
+	return schemas, tsMap, nil
 }
 
 func httpGet(url string, v interface{}) error {
