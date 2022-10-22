@@ -2,165 +2,29 @@
 
 -----
 
-## 配置示例 v2
+## 下载运行
 
-```json
-{
-  "groups": [
-    {
-      "group_id": "pd",
-      "group_index": 0,
-      "group_override": false,
-      "rules": [
-        {
-          "group_id": "pd",
-          "id": "default",
-          "index": 0,
-          "override": false,
-          "start_key": "",
-          "end_key": "",
-          "role": "voter",
-          "count": 3,
-          "location_labels": [
-            "zone"
-          ]
-        },
-        {
-          "group_id": "pd",
-          "id": "meta",
-          "index": 1,
-          "override": false,
-          "start_key": "",
-          "end_key": "7480000000000000FF0000000000000000F8",
-          "role": "voter",
-          "count": 2,
-          "location_labels": [
-            "zone"
-          ]
-        }
-      ]
-    },
-    {
-      "group_id": "tiflash",
-      "group_index": 120,
-      "group_override": false,
-      "rules": [
-        {
-          "group_id": "tiflash",
-          "id": "happy",
-          "index": 0,
-          "override": false,
-          "start_key": "7480000000000000FF4E00000000000000F8",
-          "end_key": "7480000000000000FF5000000000000000F8",
-          "role": "learner",
-          "count": 1
-        }
-      ]
-    }
-  ],
-  "labels": [
-    {
-      "key": "engine",
-      "values": [
-        "tikv",
-        "tiflash"
-      ]
-    },
-    {
-      "key": "zone",
-      "values": [
-        "zone-1",
-        "zone-2",
-        "zone-3"
-      ]
-    },
-    {
-      "key": "disk",
-      "values": [
-        "ssd",
-        "hdd"
-      ]
-    }
-  ],
-  "markdown": "group pd\n\n01/01/2022 - 01/08/2022: default\n01/01/2022 - 01/01/2022: meta\ngroup tiflash\n\n01/06/2022 - 01/06/2022: happy\n",
-  "schemas": [
-    {
-      "ts": 1640966400000000,
-      "size": 0,
-      "left": 0,
-      "name": "meta",
-      "description": "meta data of tidb cluster",
-      "start_key": "",
-      "end_key": "7480000000000000FF0000000000000000F8"
-    },
-    {
-      "ts": 1641052800000000,
-      "size": 0,
-      "left": 0,
-      "name": "system",
-      "description": "system tables of mysql database",
-      "start_key": "7480000000000000FF4400000000000000F8",
-      "end_key": "7480000000000000FF4600000000000000F8"
-    },
-    {
-      "ts": 1641139200000000,
-      "size": 0,
-      "left": 0,
-      "name": "foo",
-      "description": "test/foo",
-      "start_key": "7480000000000000FF4600000000000000F8",
-      "end_key": "7480000000000000FF4800000000000000F8"
-    },
-    {
-      "ts": 1641225600000000,
-      "size": 0,
-      "left": 0,
-      "name": "bar",
-      "description": "test/bar",
-      "start_key": "7480000000000000FF4800000000000000F8",
-      "end_key": "7480000000000000FF4A00000000000000F8"
-    },
-    {
-      "ts": 1641312000000000,
-      "size": 0,
-      "left": 0,
-      "name": "baz",
-      "description": "test/baz",
-      "start_key": "7480000000000000FF4A00000000000000F8",
-      "end_key": "7480000000000000FF4C00000000000000F8"
-    },
-    {
-      "ts": 1641398400000000,
-      "size": 0,
-      "left": 0,
-      "name": "happy",
-      "description": "hackathon/happy",
-      "start_key": "7480000000000000FF4E00000000000000F8",
-      "end_key": "7480000000000000FF5000000000000000F8"
-    },
-    {
-      "ts": 1641484800000000,
-      "size": 0,
-      "left": 0,
-      "name": "lucky",
-      "description": "hackathon/lucky",
-      "start_key": "7480000000000000FF5000000000000000F8",
-      "end_key": "7480000000000000FF5200000000000000F8"
-    },
-    {
-      "ts": 1641571200000000,
-      "size": 0,
-      "left": 0,
-      "name": "default",
-      "description": "future tables",
-      "start_key": "7480000000000000FF5200000000000000F8",
-      "end_key": ""
-    }
-  ]
-}
+下载服务端 https://github.com/dui-dui-dui/backend/releases
+
+运行：
+
+```bash
+./backend --tidb 127.0.0.1:10080 --pd 127.0.0.1:2379 --addr :8080
 ```
 
-## 配置示例
+开发模式：
+
+```bash
+./backend --dev
+```
+
+## 接口
+
+### GET /config
+
+获取配置，示例 https://github.com/dui-dui-dui/backend/blob/main/data/config_out.json
+
+**开发模式下，schema/store/store_labels 都是固定的默认值，groups 读取 groups.json 文件，没有此文件时也返回固定默认值**
 
 说明：
 
@@ -177,133 +41,15 @@
 
 * store_labels 是所有可选的 label，用于配置 rule 的表单使用
 
-```json
-{
-  "schemas": [
-    {
-      "name": "meta",
-      "description": "meta data of tidb cluster",
-      "start_key": "",
-      "end_key": "7480000000000000FF0000000000000000F8"
-    },
-    {
-      "name": "system",
-      "description": "system tables of mysql database",
-      "start_key": "7480000000000000FF4400000000000000F8",
-      "end_key": "7480000000000000FF4600000000000000F8"
-    },
-    {
-      "name": "foo",
-      "description": "test/foo",
-      "start_key": "7480000000000000FF4600000000000000F8",
-      "end_key": "7480000000000000FF4800000000000000F8"
-    },
-    {
-      "name": "bar",
-      "description": "test/bar",
-      "start_key": "7480000000000000FF4800000000000000F8",
-      "end_key": "7480000000000000FF4A00000000000000F8"
-    },
-    {
-      "name": "baz",
-      "description": "test/baz",
-      "start_key": "7480000000000000FF4A00000000000000F8",
-      "end_key": "7480000000000000FF4C00000000000000F8"
-    },
-    {
-      "name": "happy",
-      "description": "hackathon/happy",
-      "start_key": "7480000000000000FF4E00000000000000F8",
-      "end_key": "7480000000000000FF5000000000000000F8"
-    },
-    {
-      "name": "lucky",
-      "description": "hackathon/lucky",
-      "start_key": "7480000000000000FF5000000000000000F8",
-      "end_key": "7480000000000000FF5200000000000000F8"
-    },
-    {
-      "name": "default",
-      "description": "future tables",
-      "start_key": "7480000000000000FF5200000000000000F8",
-      "end_key": ""
-    }
-  ],
-  "rule_config": [
-    {
-      "group_id": "pd",
-      "group_index": 0,
-      "group_override": false,
-      "rules": [
-        {
-          "group_id": "pd",
-          "id": "default",
-          "index": 0,
-          "override": false,
-          "start_schema": "meta",
-          "end_schema": "default",
-          "start_key": "",
-          "end_key": "",
-          "role": "voter",
-          "count": 3
-        },
-        {
-          "group_id": "pd",
-          "id": "meta",
-          "index": 1,
-          "override": false,
-          "start_schema": "meta",
-          "end_schema": "meta",
-          "start_key": "",
-          "end_key": "7480000000000000FF0000000000000000F8",
-          "role": "voter",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "group_id": "tiflash",
-      "group_index": 120,
-      "group_override": false,
-      "rules": [
-        {
-          "group_id": "tiflash",
-          "id": "happy",
-          "index": 0,
-          "override": false,
-          "start_schema": "happy",
-          "end_schema": "happy",
-          "start_key": "7480000000000000FF4E00000000000000F8",
-          "end_key": "7480000000000000FF5000000000000000F8",
-          "role": "learner",
-          "count": 1
-        }
-      ]
-    }
-  ],
-  "store_labels": [
-    {
-      "key": "engine",
-      "values": [
-        "tikv",
-        "tiflash"
-      ]
-    },
-    {
-      "key": "zone",
-      "values": [
-        "zone-1",
-        "zone-2",
-        "zone-3"
-      ]
-    },
-    {
-      "key": "disk",
-      "values": [
-        "ssd",
-        "hdd"
-      ]
-    }
-  ]
-}
-```
+### GET /region
+
+获取 region 分布，格式为 `{"markdown":"$MARKDOWN"}`，MARKDOWN 文本示例： https://github.com/dui-dui-dui/backend/blob/main/data/region_out.txt
+
+**开发模式下，每次取到的都是随机分布**
+
+### POST /config
+
+更新配置，格式与 GET /config 一致 https://github.com/dui-dui-dui/backend/blob/main/data/config_out.json
+
+**开发模式下，保存在本地文件 groups.json，如果文件出问题了可以手动删掉使用默认值重新来**
+
