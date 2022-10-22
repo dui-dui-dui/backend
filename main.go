@@ -29,13 +29,16 @@ func main() {
 		log.Fatal("load store labels", err)
 	}
 
-	es, eg := convertToEvents(schemas, groups)
+	// es, eg := convertToEvents(schemas, groups)
+
+	eSchemas, markdown := convertToMarkdown(schemas, groups)
 
 	enc := json.NewEncoder(os.Stdout)
 	enc.SetIndent("", "  ")
 	enc.Encode(map[string]any{
-		"schemas": es,
-		"groups":  eg,
-		"labels":  labels,
+		"markdown": markdown,
+		"schemas":  eSchemas,
+		"groups":   groups,
+		"labels":   labels,
 	})
 }
