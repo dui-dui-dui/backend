@@ -29,14 +29,13 @@ func main() {
 		log.Fatal("load store labels", err)
 	}
 
-	es, ee, eg := convertToEvents(schemas, groups)
+	es, eg := convertToEvents(schemas, groups)
 
 	enc := json.NewEncoder(os.Stdout)
 	enc.SetIndent("", "  ")
 	enc.Encode(map[string]any{
 		"schemas": es,
 		"groups":  eg,
-		"events":  ee,
 		"labels":  labels,
 	})
 }

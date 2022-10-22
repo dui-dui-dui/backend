@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"time"
+)
+
 type eSchema struct {
 	TS          int64  `json:"ts"`
 	Size        int    `json:"size"`
@@ -20,9 +25,9 @@ type eEvent struct {
 			Content any    `json:"content"`
 		} `json:"event"`
 		Date struct {
-			FromDateTime    int64  `json:"fromDateTime"`
-			ToDateTime      int64  `json:"toDateTime"`
-			OriginalString  string `json:"originalString"`
+			FromDateTime    time.Time `json:"fromDateTime"`
+			ToDateTime      time.Time `json:"toDateTime"`
+			OriginalString  string    `json:"originalString"`
 			DateRangeInText struct {
 				From    int64  `json:"from"`
 				To      int64  `json:"to"`
@@ -46,48 +51,35 @@ type eGroup struct {
 	Tags  []string `json:"tags"`
 	Title string   `json:"title"`
 	Range struct {
-		Min    int64 `json:"min"`
-		Max    int64 `json:"max"`
-		Latest int64 `json:"latest"`
+		Min    time.Time `json:"min"`
+		Max    time.Time `json:"max"`
+		Latest time.Time `json:"latest"`
 	} `json:"range"`
-	StartExpanded bool   `json:"startExpanded"`
-	Style         string `json:"style"`
+	StartExpanded bool     `json:"startExpanded"`
+	Style         string   `json:"style"`
+	Events        []eEvent `json:"events"`
 }
 
-func convertSchemas(ss []Schema) []eSchema {
-	start := int64(1666195200000)
-	var es []eSchema
-	for i, s := range ss {
-		es = append(es, eSchema{
-			TS:          start + int64(i)*24*3600*1000,
-			Name:        s.Name,
-			Description: s.Description,
-			StartKey:    s.StartKey,
-			EndKey:      s.EndKey,
-		})
-	}
-	return es
-}
+func convertToEvents(schemas []Schema, groups []Group) ([]eSchema, []eGroup) {
+	start, _ := time.Parse("2006-01-02 15:04:05 MST", "2022-01-01 00:00:00 CST")
 
-func convertToEvents(schemas []Schema, groups []Group) ([]eSchema, []eEvent, []eGroup) {
-	start := int64(1666195200000)
 	var ess []eSchema
-	startTS, endTS := make(map[string]int64), make(map[string]int64)
+	startTS, endTS := make(map[string]time.Time), make(map[string]time.Time)
 	startTS[""] = start
-	endTS[""] = start + int64(len(schemas))*24*3600*1000
+	endTS[""] = start.AddDate(0, 0, len(schemas)-1)
 	for i, s := range schemas {
-		ts := start + int64(i)*24*3600*1000
+		ts := start.AddDate(0, 0, i)
 		startTS[s.StartKey], endTS[s.EndKey] = ts, ts
 		ess = append(ess, eSchema{
-			TS:          ts,
+			TS:          ts.UnixMicro(),
 			Name:        s.Name,
 			Description: s.Description,
 			StartKey:    s.StartKey,
 			EndKey:      s.EndKey,
 		})
 	}
-	var ees []eEvent
 	var egs []eGroup
+
 	for _, g := range groups {
 		var eg eGroup
 		eg.StartExpanded = true
@@ -100,20 +92,17 @@ func convertToEvents(schemas []Schema, groups []Group) ([]eSchema, []eEvent, []e
 		for i, r := range g.Rules {
 			var ee eEvent
 			ee.EventString = r.ID
-			ee.Ranges.Event.From = startTS[r.StartKeyHex]
-			ee.Ranges.Event.To = endTS[r.EndKeyHex]
 			ee.Ranges.Event.Type = "event"
 			ee.Ranges.Date.FromDateTime = startTS[r.StartKeyHex]
 			ee.Ranges.Date.ToDateTime = endTS[r.EndKeyHex]
-			ee.Ranges.Date.DateRangeInText.From = startTS[r.StartKeyHex]
-			ee.Ranges.Date.DateRangeInText.To = endTS[r.EndKeyHex]
 			ee.Ranges.Date.DateRangeInText.Type = "dateRange"
-			ees = append(ees, ee)
+			ee.Event.EventDescription = display(r.Count, r.Role)
+			eg.Events = append(eg.Events, ee)
 
-			if i == 0 || startTS[r.StartKeyHex] < eg.Range.Min {
+			if i == 0 || startTS[r.StartKeyHex].Before(eg.Range.Min) {
 				eg.Range.Min = startTS[r.StartKeyHex]
 			}
-			if i == 0 || endTS[r.EndKeyHex] > eg.Range.Max {
+			if i == 0 || endTS[r.EndKeyHex].After(eg.Range.Max) {
 				eg.Range.Max = endTS[r.EndKeyHex]
 				eg.Range.Latest = endTS[r.EndKeyHex]
 			}
@@ -121,5 +110,12 @@ func convertToEvents(schemas []Schema, groups []Group) ([]eSchema, []eEvent, []e
 
 		egs = append(egs, eg)
 	}
-	return ess, ees, egs
+	return ess, egs
+}
+
+func display(count int, name string) string {
+	if count > 1 {
+		return fmt.Sprintf("%d %ss", count, name)
+	}
+	return fmt.Sprintf("%d %s", count, name)
 }
