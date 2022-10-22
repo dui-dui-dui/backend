@@ -8,121 +8,52 @@
 {
   "groups": [
     {
-      "tags": null,
-      "title": "pd",
-      "range": {
-        "min": "2022-01-01T00:00:00+08:00",
-        "max": "2022-01-08T00:00:00+08:00",
-        "latest": "2022-01-08T00:00:00+08:00"
-      },
-      "startExpanded": true,
-      "style": "group",
-      "events": [
+      "group_id": "pd",
+      "group_index": 0,
+      "group_override": false,
+      "rules": [
         {
-          "eventString": "default",
-          "ranges": {
-            "event": {
-              "from": 0,
-              "to": 0,
-              "type": "event",
-              "content": null
-            },
-            "date": {
-              "fromDateTime": "2022-01-01T00:00:00+08:00",
-              "toDateTime": "2022-01-08T00:00:00+08:00",
-              "originalString": "",
-              "dateRangeInText": {
-                "from": 0,
-                "to": 0,
-                "type": "dateRange",
-                "content": null
-              }
-            }
-          },
-          "event": {
-            "eventDescription": "3 voters",
-            "tags": null,
-            "supplemental": null,
-            "googlePhotosLink": "",
-            "locations": null,
-            "id": "",
-            "percent": 0
-          }
+          "group_id": "pd",
+          "id": "default",
+          "index": 0,
+          "override": false,
+          "start_key": "",
+          "end_key": "",
+          "role": "voter",
+          "count": 3,
+          "location_labels": [
+            "zone"
+          ]
         },
         {
-          "eventString": "meta",
-          "ranges": {
-            "event": {
-              "from": 0,
-              "to": 0,
-              "type": "event",
-              "content": null
-            },
-            "date": {
-              "fromDateTime": "2022-01-01T00:00:00+08:00",
-              "toDateTime": "2022-01-01T00:00:00+08:00",
-              "originalString": "",
-              "dateRangeInText": {
-                "from": 0,
-                "to": 0,
-                "type": "dateRange",
-                "content": null
-              }
-            }
-          },
-          "event": {
-            "eventDescription": "2 voters",
-            "tags": null,
-            "supplemental": null,
-            "googlePhotosLink": "",
-            "locations": null,
-            "id": "",
-            "percent": 0
-          }
+          "group_id": "pd",
+          "id": "meta",
+          "index": 1,
+          "override": false,
+          "start_key": "",
+          "end_key": "7480000000000000FF0000000000000000F8",
+          "role": "voter",
+          "count": 2,
+          "location_labels": [
+            "zone"
+          ]
         }
       ]
     },
     {
-      "tags": null,
-      "title": "tiflash",
-      "range": {
-        "min": "2022-01-06T00:00:00+08:00",
-        "max": "2022-01-06T00:00:00+08:00",
-        "latest": "2022-01-06T00:00:00+08:00"
-      },
-      "startExpanded": true,
-      "style": "group",
-      "events": [
+      "group_id": "tiflash",
+      "group_index": 120,
+      "group_override": false,
+      "rules": [
         {
-          "eventString": "happy",
-          "ranges": {
-            "event": {
-              "from": 0,
-              "to": 0,
-              "type": "event",
-              "content": null
-            },
-            "date": {
-              "fromDateTime": "2022-01-06T00:00:00+08:00",
-              "toDateTime": "2022-01-06T00:00:00+08:00",
-              "originalString": "",
-              "dateRangeInText": {
-                "from": 0,
-                "to": 0,
-                "type": "dateRange",
-                "content": null
-              }
-            }
-          },
-          "event": {
-            "eventDescription": "1 learner",
-            "tags": null,
-            "supplemental": null,
-            "googlePhotosLink": "",
-            "locations": null,
-            "id": "",
-            "percent": 0
-          }
+          "group_id": "tiflash",
+          "id": "happy",
+          "index": 0,
+          "override": false,
+          "start_key": "7480000000000000FF4E00000000000000F8",
+          "end_key": "7480000000000000FF5000000000000000F8",
+          "role": "learner",
+          "count": 1
         }
       ]
     }
@@ -151,6 +82,7 @@
       ]
     }
   ],
+  "markdown": "group pd\n\n01/01/2022 - 01/08/2022: default\n01/01/2022 - 01/01/2022: meta\ngroup tiflash\n\n01/06/2022 - 01/06/2022: happy\n",
   "schemas": [
     {
       "ts": 1640966400000000,
