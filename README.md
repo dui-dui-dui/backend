@@ -47,7 +47,7 @@
 
 **开发模式下，每次取到的都是随机分布**
 
-### POST /config
+### POST /save
 
 更新配置，格式与 GET /config 一致 https://github.com/dui-dui-dui/backend/blob/main/data/config_out.json
 

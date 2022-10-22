@@ -57,6 +57,7 @@ func main() {
 	}
 
 	http.HandleFunc("/config", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("handle /config")
 		data, err := handleConfig()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -66,6 +67,7 @@ func main() {
 		w.Write([]byte(data))
 	})
 	http.HandleFunc("/region", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("handle /region")
 		data, err := handleRegions()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -75,6 +77,7 @@ func main() {
 		w.Write([]byte(data))
 	})
 	http.HandleFunc("/save", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("handle /save")
 		data, err := ioutil.ReadAll(r.Body)
 		defer r.Body.Close()
 		if err != nil {
@@ -99,6 +102,7 @@ func main() {
 		w.Write([]byte("ok"))
 	})
 
+	log.Println("start server", *addr, "dev mode:", *dev)
 	http.ListenAndServe(*addr, nil)
 }
 
@@ -160,6 +164,7 @@ func handleSave(markdown string, groups []Group) error {
 		}
 	}
 	if *dev {
+		log.Println("groups.json is updated")
 		ioutil.WriteFile("groups.json", []byte(marshal(newGroups)), 0644)
 		return nil
 	}
