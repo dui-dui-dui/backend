@@ -64,6 +64,7 @@ func main() {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Write([]byte(data))
 	})
 	http.HandleFunc("/region", func(w http.ResponseWriter, r *http.Request) {
@@ -74,6 +75,7 @@ func main() {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Write([]byte(data))
 	})
 	http.HandleFunc("/save", func(w http.ResponseWriter, r *http.Request) {
@@ -99,6 +101,7 @@ func main() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Write([]byte("ok"))
 	})
 
@@ -168,8 +171,7 @@ func handleSave(markdown string, groups []Group) error {
 		ioutil.WriteFile("groups.json", []byte(marshal(newGroups)), 0644)
 		return nil
 	}
-	// TODO: save to pd
-	return nil
+	return saveRuleConfig(newGroups)
 }
 
 func marshal(v interface{}) string {
