@@ -65,7 +65,6 @@ func main() {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Write([]byte(data))
 	})
 	http.HandleFunc("/region", func(w http.ResponseWriter, r *http.Request) {
@@ -82,6 +81,12 @@ func main() {
 	})
 	http.HandleFunc("/save", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("handle /save")
+		if r.Method != "POST" {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Token")
+			return
+		}
 		data, err := ioutil.ReadAll(r.Body)
 		defer r.Body.Close()
 		if err != nil {
@@ -106,7 +111,6 @@ func main() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Write([]byte("ok"))
 	})
 
