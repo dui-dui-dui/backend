@@ -60,6 +60,7 @@ func main() {
 		log.Println("handle /config")
 		data, err := handleConfig()
 		if err != nil {
+			log.Println(err.Error())
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -71,6 +72,7 @@ func main() {
 		log.Println("handle /region")
 		data, err := handleRegions()
 		if err != nil {
+			log.Println(err.Error())
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -83,6 +85,7 @@ func main() {
 		data, err := ioutil.ReadAll(r.Body)
 		defer r.Body.Close()
 		if err != nil {
+			log.Println(err.Error())
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -93,11 +96,13 @@ func main() {
 		var sd saveData
 		err = json.Unmarshal(data, &sd)
 		if err != nil {
+			log.Println(err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		err = handleSave(sd.Markdown, sd.Groups)
 		if err != nil {
+			log.Println(err.Error())
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
