@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"net/http"
 )
 
 type Group struct {
@@ -67,4 +70,18 @@ func loadRuleConfig() ([]Group, error) {
 		return nil, err
 	}
 	return groups, nil
+}
+
+func saveRuleConfig(groups []Group) error {
+	data := []byte(marshal(groups))
+	res, err := http.Post("http://"+*pdAddr+"/pd/api/v1/config/placement-rule", "application/json", bytes.NewBuffer(data))
+	if err != nil {
+		return err
+	}
+	if res.StatusCode != http.StatusOK {
+		defer res.Body.Close()
+		body, _ := ioutil.ReadAll(res.Body)
+		return fmt.Errorf("failed to save rule config: %s", body)
+	}
+	return nil
 }
