@@ -96,13 +96,13 @@ func main() {
 		var sd saveData
 		err = json.Unmarshal(data, &sd)
 		if err != nil {
-			log.Println(err.Error())
+			log.Println(err.Error(), string(data))
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		err = handleSave(sd.Markdown, sd.Groups)
 		if err != nil {
-			log.Println(err.Error())
+			log.Println(err.Error(), string(data))
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
