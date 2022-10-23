@@ -14,7 +14,7 @@ func convertGroupMarkdown(groups []Group) string {
 	for _, g := range groups {
 		sb.WriteString("group " + g.ID + "\n\n")
 		for _, r := range g.Rules {
-			sb.WriteString(fmt.Sprintf("%s - %s: %s\n", TSMAP.StartTS[r.StartKeyHex].Format("01/02/2006"), TSMAP.EndTS[r.EndKeyHex].Format("01/02/2006"), r.ID))
+			sb.WriteString(fmt.Sprintf("%s - %s: %s\n", TSMAP.StartTS[r.StartKeyHex].Format("1/2/2006"), TSMAP.EndTS[r.EndKeyHex].Format("1/2/2006"), r.ID))
 		}
 	}
 	return sb.String()
@@ -34,7 +34,7 @@ func convertRegionMarkdown(regions []Region) string {
 					if p.RoleName == "Learner" {
 						role = "Learner"
 					}
-					peers[p.StoreID] = append(peers[p.StoreID], fmt.Sprintf("%s: %s", TSMAP.StartTS[s.StartKey].Format("01/02/2006"), role))
+					peers[p.StoreID] = append(peers[p.StoreID], fmt.Sprintf("%s: %s", TSMAP.StartTS[s.StartKey].Format("1/2/2006"), role))
 				}
 				break
 			}
@@ -72,14 +72,14 @@ func mockRegionMarkdown() string {
 		}
 		rand.Shuffle(len(idxs), func(i, j int) { idxs[i], idxs[j] = idxs[j], idxs[i] })
 		i := 0
-		peers[idxs[i]] = append(peers[idxs[i]], fmt.Sprintf("%s: Leader", TSMAP.StartTS[s.StartKey].Format("01/02/2006")))
+		peers[idxs[i]] = append(peers[idxs[i]], fmt.Sprintf("%s: Leader", TSMAP.StartTS[s.StartKey].Format("1/2/2006")))
 		i++
 		for j := 0; j < rand.Int()%4; j++ {
-			peers[idxs[i]] = append(peers[idxs[i]], fmt.Sprintf("%s: Follower", TSMAP.StartTS[s.StartKey].Format("01/02/2006")))
+			peers[idxs[i]] = append(peers[idxs[i]], fmt.Sprintf("%s: Follower", TSMAP.StartTS[s.StartKey].Format("1/2/2006")))
 			i++
 		}
 		for j := 0; j < rand.Int()%2; j++ {
-			peers[idxs[i]] = append(peers[idxs[i]], fmt.Sprintf("%s: Learner", TSMAP.StartTS[s.StartKey].Format("01/02/2006")))
+			peers[idxs[i]] = append(peers[idxs[i]], fmt.Sprintf("%s: Learner", TSMAP.StartTS[s.StartKey].Format("1/2/2006")))
 			i++
 		}
 	}
@@ -137,7 +137,7 @@ func parseMarkdown(data string) ([]Group, error) {
 }
 
 func findStartKey(timeStr string) string {
-	t, _ := time.ParseInLocation("01/02/2006", timeStr, time.Local)
+	t, _ := time.ParseInLocation("1/2/2006", timeStr, time.Local)
 	for k, v := range TSMAP.StartTS {
 		if v.Unix() == t.Unix() {
 			return k
@@ -147,7 +147,7 @@ func findStartKey(timeStr string) string {
 }
 
 func findEndKey(timeStr string) string {
-	t, _ := time.ParseInLocation("01/02/2006", timeStr, time.Local)
+	t, _ := time.ParseInLocation("1/2/2006", timeStr, time.Local)
 	for k, v := range TSMAP.EndTS {
 		if v.Unix() == t.Unix() {
 			return k
