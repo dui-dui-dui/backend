@@ -22,6 +22,9 @@ func convertGroupMarkdown(groups []Group) string {
 
 func convertRegionMarkdown(regions []Region) string {
 	peers := make(map[int64][]string)
+	for _, s := range STORES {
+		peers[s.ID] = make([]string, 0)
+	}
 	for _, s := range SCHEMAS {
 		for _, r := range regions {
 			if s.StartKey >= r.StartKey && (r.EndKey == "" || s.EndKey <= r.EndKey) {
@@ -34,7 +37,9 @@ func convertRegionMarkdown(regions []Region) string {
 					if p.RoleName == "Learner" {
 						role = "Learner"
 					}
-					peers[p.StoreID] = append(peers[p.StoreID], fmt.Sprintf("%s: %s", TSMAP.StartTS[s.StartKey].Format("1/2/2006"), role))
+					start := TSMAP.StartTS[s.StartKey].Format("1/2/2006") // + " 08:00:00"
+					end := TSMAP.StartTS[s.StartKey].Format("1/2/2006")   // + " 16:00:00"
+					peers[p.StoreID] = append(peers[p.StoreID], fmt.Sprintf("%s - %s: %s", start, end, role))
 				}
 				break
 			}
@@ -50,7 +55,15 @@ func convertRegionMarkdown(regions []Region) string {
 
 	var sb strings.Builder
 	for _, id := range storeIDs {
-		sb.WriteString(fmt.Sprintf("section Store #%d\n\n", id))
+		desc := ""
+		for _, s := range STORES {
+			if id == s.ID {
+				for _, l := range s.Labels {
+					desc += l.Value + " "
+				}
+			}
+		}
+		sb.WriteString(fmt.Sprintf("section Store%d %s\n\n", id, desc))
 		for _, r := range peers[id] {
 			sb.WriteString(r + "\n")
 		}
@@ -115,17 +128,26 @@ func parseMarkdown(data string) ([]Group, error) {
 			index++
 			continue
 		}
+		var start, end, id string
 		regx := regexp.MustCompile(`(\d+/\d+/\d+)\s+-\s+(\d+/\d+/\d+).*:(.*)`)
 		matches := regx.FindStringSubmatch(line)
-		if len(matches) != 4 {
-			return nil, fmt.Errorf("invalid event format: %s", line)
+		if len(matches) == 4 {
+			start, end, id = matches[1], matches[2], matches[3]
+		} else {
+			regx := regexp.MustCompile(`(\d+/\d+/\d+).*:(.*)`)
+			matches := regx.FindStringSubmatch(line)
+			if len(matches) == 3 {
+				start, end, id = matches[1], matches[1], matches[2]
+			} else {
+				return nil, fmt.Errorf("invalid event format: %s", line)
+			}
 		}
 		rule := Rule{
 			GroupID:     group.ID,
-			ID:          strings.TrimSpace(matches[3]),
+			ID:          strings.TrimSpace(id),
 			Index:       index,
-			StartKeyHex: findStartKey(matches[1]),
-			EndKeyHex:   findEndKey(matches[2]),
+			StartKeyHex: findStartKey(start),
+			EndKeyHex:   findEndKey(end),
 		}
 		index++
 		group.Rules = append(group.Rules, rule)

@@ -68,7 +68,6 @@ func main() {
 		w.Write([]byte(data))
 	})
 	http.HandleFunc("/region", func(w http.ResponseWriter, r *http.Request) {
-		log.Println("handle /region")
 		data, err := handleRegions()
 		if err != nil {
 			log.Println(err.Error())
